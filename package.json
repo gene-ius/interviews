@@ -1,0 +1,16 @@
+{
+  "name": "interviews",
+  "version": "1.0.0",
+  "description": "Check out [account_balance_interpolation.md](https://github.com/altir-app/interviews/blob/main/account_balance_interpolation.md) to get started!",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^20.4.1",
+    "axios": "^1.4.0"
+  }
+}
