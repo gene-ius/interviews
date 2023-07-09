@@ -23,10 +23,8 @@ axios.get(PATH)
     while (pos < transactions.length) {
         if (currentDate === transactions[pos].date) {
             currentBalance += parseFloat(transactions[pos].amount);
-            console.log(currentDate, "adding balance ", transactions[pos].amount, " to balance");
         }
         else {
-            console.log("Creating snapshot of ", currentDate, " with balance ", currentBalance);
             // create and add the current end of day account state to history
             var state = {
                 date: new Date(currentDate).toLocaleString('en-US', { dateStyle: 'short' }),
@@ -37,7 +35,6 @@ axios.get(PATH)
             history.push(state);
             // Check if there are any 0 transaction days with helper function. Condition : dayDiff is > 1
             var dayDiff = getSkippedDays(currentDate, transactions[pos].date);
-            console.log("there are ", dayDiff, " days missed between ", currentDate, " and the next date ", transactions[pos].date);
             var savedDate = new Date(currentDate);
             while (dayDiff > 1) {
                 savedDate.setDate(savedDate.getDate() - 1);
@@ -47,7 +44,6 @@ axios.get(PATH)
                         amount: Math.round(currentBalance * 100) / 100
                     }
                 };
-                console.log("Adding new date ", savedDate.toLocaleString('en-US', { dateStyle: 'short' }), "with same balance ", currentBalance);
                 history.push(skippedstate);
                 dayDiff--;
             }
@@ -57,7 +53,7 @@ axios.get(PATH)
         }
         pos++;
     }
-    // handle final straggler state (whatever current state and balance is left art at end of while loop)
+    // handle final (earliest) account state
     var finalState = {
         date: new Date(currentDate).toLocaleString("en-US", { dateStyle: 'short' }),
         balance: {
@@ -72,9 +68,9 @@ axios.get(PATH)
             console.log(err);
             throw err;
         }
-        console.log("EOD history data written correctly");
+        console.log("EOD Account History data written!");
     });
 })
     .catch(function (err) {
-    console.error("There was an error in fetching data: ", err);
+    console.error("There was an error in fetching data from the given PATH", err);
 });
